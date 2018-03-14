@@ -1,11 +1,5 @@
 #pragma once
 #include <cstdint>
 
-namespace sog
-{
-	typedef void(__fastcall* tTakeBaseDamage)(void *, int);
-	static tTakeBaseDamage oTakeBaseDamage;
-	static uint32_t addrTakeBaseDamage;
-	
-	
-}
+static void(__fastcall* tTakeBaseDamage)(void *, int);
+static uint32_t addrTakeBaseDamage;
