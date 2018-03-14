@@ -4,7 +4,11 @@
 void Trainer::HookTakeDamage()
 {
 	// Set the hook and save the address
-	addrTakeBaseDamage = hookManager.addHook(HookManager::HookType::Call, (uint8_t*)0x302486DE, (uint8_t*)&hkTakeBaseDamage);
+	auto hook = hookManager.createHook(HookManager::HookType::Call, (uint8_t*)0x30CD86DE, (uint8_t*)&hkTakeBaseDamage);
+	hook->Hook();
+	addrTakeBaseDamage = hook->GetOriginal();
+	std::cout << hook->GetAddress() << std::endl;
+	std::cout << hook->GetOriginal() << std::endl;
 }
 
 void Trainer::Run()
@@ -24,5 +28,7 @@ void Trainer::Run()
 void Trainer::hkTakeBaseDamage(void * pThis, int iDamage)
 {
 	// call original function with modified parameters
-	(decltype(tTakeBaseDamage)(addrTakeBaseDamage))(pThis, 999);
+//	(decltype(tTakeBaseDamage)(addrTakeBaseDamage))(pThis, 999);
+	auto func = reinterpret_cast<decltype(tTakeBaseDamage)>(addrTakeBaseDamage);
+	func(pThis, 999);
 }
