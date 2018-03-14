@@ -4,9 +4,10 @@
 void Trainer::HookTakeDamage()
 {
 	// Set the hook
-	sog::oTakeBaseDamageAddress = hookManager.addHook(HookManager::HookType::Call, (uint8_t*)0x30B886DE, (uint8_t*)&sog::hkTakeBaseDamage);
+	auto origAddress = hookManager.addHook(HookManager::HookType::Call, (uint8_t*)0x307286DE, (uint8_t*)&hkTakeBaseDamage);
 	// Save the original function
-	sog::oTakeBaseDamage = reinterpret_cast<sog::tTakeBaseDamage>(sog::oTakeBaseDamageAddress);
+	
+	sog::addrTakeBaseDamage = origAddress;
 }
 
 void Trainer::Run()
@@ -14,7 +15,6 @@ void Trainer::Run()
 	console.SetTitle("SoG Trainer");
 	HookTakeDamage();
 	hookManager.printHookInfo();
-	std::cout << "[SoG] TakeBaseDamage Addr: " << std::hex << "0x" << sog::oTakeBaseDamageAddress << std::endl;
 	while (1)
 	{
 		if (GetAsyncKeyState(VK_DELETE) & 0x1)
@@ -22,4 +22,10 @@ void Trainer::Run()
 			break;
 		}
 	}
+}
+
+void Trainer::hkTakeBaseDamage(void * pThis, int iDamage)
+{
+	auto oTakeBaseDamage = reinterpret_cast<sog::tTakeBaseDamage>(sog::addrTakeBaseDamage);
+	oTakeBaseDamage(pThis, 999);
 }

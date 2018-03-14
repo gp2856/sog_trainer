@@ -18,5 +18,5 @@ public:
 private:
 	HookManager hookManager;
 	Console console;
-	
+	static void __fastcall hkTakeBaseDamage(void *pThis, int iDamage);
 };

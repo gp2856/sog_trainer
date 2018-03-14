@@ -10,7 +10,7 @@ uint32_t HookManager::addHook(HookType hookType, uint8_t* hookAt, uint8_t* callb
 	switch (hookType)
 	{
 	case HookType::Call:
-		{
+	{
 		/* The disassembly of a near call will resemble something like this:
 			0x308586DE:	E8 69 79 07 00
 			Where E8 is the call opcode and 69 79 07 00 is the offset.  Offset is 0x00077969 because endianness
@@ -24,21 +24,20 @@ uint32_t HookManager::addHook(HookType hookType, uint8_t* hookAt, uint8_t* callb
 
 		uint32_t originalOffset = 0x0;
 		// Of course we must first make sure that we are accessing memory with R/W/X
-			if (memory.protectMemory<uint32_t>(reinterpret_cast<uint32_t>(hookAt), PAGE_EXECUTE_READWRITE))
-			{
-				// Copy 4 bytes from the address past the call opcode
-				memcpy(&originalOffset, hookAt + 1, sizeof(uint32_t));
-				uint32_t newOffset = (uint32_t)callback - (uint32_t)hookAt - 5;
-				memcpy(hookAt+1, &newOffset, sizeof(uint32_t));
+		DWORD oldProtection;
+		VirtualProtect(hookAt, sizeof(uint32_t), PAGE_EXECUTE_READWRITE, &oldProtection);
+		// Copy 4 bytes from the address past the call opcode
+		memcpy(&originalOffset, hookAt + 1, sizeof(uint32_t));
+		uint32_t newOffset = (uint32_t)callback - (uint32_t)hookAt - 5;
+		memcpy(hookAt+1, &newOffset, sizeof(uint32_t));
 
-				// Restore original protection just in case
-				memory.protectMemory<uint32_t>(reinterpret_cast<uint32_t>(hookAt));
-				hookList.insert(std::make_pair<std::string, uint32_t>("TakeBaseDamage", (uint32_t)hookAt));
-				return originalOffset + (uint32_t)hookAt + 5;
-			}
-		}
+		// Restore original protection just in case
+		hookList.insert(std::make_pair<std::string, uint32_t>("TakeBaseDamage", (uint32_t)hookAt));
+		VirtualProtect(hookAt, sizeof(uint32_t), oldProtection, &oldProtection);
+		return originalOffset + (uint32_t)hookAt + 5;			
+	}
 	default:
-		return 0;
+		break;
 	}
 }
 
