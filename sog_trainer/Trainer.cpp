@@ -24,5 +24,5 @@ void Trainer::Run()
 void Trainer::hkTakeBaseDamage(void * pThis, int iDamage)
 {
 	// call original function with modified parameters
-	((decltype(tTakeBaseDamage)(addrTakeBaseDamage))(pThis, 999));
+	(decltype(tTakeBaseDamage)(addrTakeBaseDamage))(pThis, 999);
 }
