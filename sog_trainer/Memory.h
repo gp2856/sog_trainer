@@ -49,15 +49,3 @@ inline bool MemoryEditor::writeMemory(const uint32_t address, T val)
 		
 	return false;
 }
-
-
-template<class T>
-inline bool MemoryEditor::protectMemory(const uint32_t address)
-{
-	return VirtualProtect(reinterpret_cast<T*>(address), sizeof(T), dwOldProtection, &dwOldProtection);
-}
-template<class T>
-inline bool MemoryEditor::protectMemory(const uint32_t address, const DWORD protection)
-{
-	return VirtualProtect(reinterpret_cast<T*>(address), sizeof(T), protection, &dwOldProtection);
-}
