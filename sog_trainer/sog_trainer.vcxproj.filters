@@ -30,9 +30,6 @@
     <ClCompile Include="SecretsOfGrindea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SoG.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Trainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
