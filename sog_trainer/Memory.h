@@ -18,10 +18,7 @@ public:
 	template<class T>
 	bool writeMemory(const uint32_t address, T val);
 
-	template <class T>
-	bool protectMemory(const uint32_t address);
-	template<class T>
-	bool protectMemory(const uint32_t address, const DWORD protection);
+	
 
 	LPVOID findPattern(char *pPattern, size_t patternSize, uint8_t wildcard, uint8_t* scanStart, size_t scanSize);
 	// Direct byte manipulation
