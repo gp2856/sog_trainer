@@ -1,22 +1,22 @@
 #include "HookManager.h"
 #include <algorithm>
-//HookManager::AbstractHook* HookManager::getHookByName(const std::string & function)
-//{
-//	auto got = hookList.find(function);
-//	if (got == hookList.end())
-//	{
-//		return 0;
-//	}
-//	return &got->second->GetAddress();
-//}
+std::shared_ptr<HookManager::AbstractHook> HookManager::getHookByName(const std::string & function)
+{
+	auto got = hookList.find(function);
+	if (got == hookList.end())
+	{
+		return 0;
+	}
+	return got->second;
+}
 
-std::unique_ptr<HookManager::AbstractHook> HookManager::createHook(HookType hookType, uint8_t* hookAt, uint8_t* addressOfCallbackFunction)
+std::unique_ptr<HookManager::AbstractHook> HookManager::createHook(HookType hookType, const std::string& name, uint8_t* hookAt, uint8_t* addressOfCallbackFunction)
 {
 	switch (hookType)
 	{
 	case HookType::Call:
 	{
-		return std::make_unique<CallHook>(hookAt, addressOfCallbackFunction);
+		hookList[name] = std::make_shared<CallHook>(hookAt, addressOfCallbackFunction);
 	}
 	default:
 		return nullptr;

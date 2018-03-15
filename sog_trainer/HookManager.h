@@ -56,8 +56,8 @@ public:
 	HookManager operator=(const HookManager&) = delete;
 
 	size_t getNumHookedFunctions() { return hookList.size(); };
-	/*AbstractHook* getHookByName(const std::string& function);*/
-	std::unique_ptr<AbstractHook> createHook(HookType hookType, uint8_t* hookAt,  uint8_t* addressOfCallbackFunction);
+	std::shared_ptr<AbstractHook> getHookByName(const std::string& function);
+	std::unique_ptr<AbstractHook> createHook(HookType hookType, const std::string& name, uint8_t* hookAt,  uint8_t* addressOfCallbackFunction);
 	void printHookInfo();
 
 private:
