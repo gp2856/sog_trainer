@@ -5,7 +5,7 @@ std::shared_ptr<HookManager::AbstractHook> HookManager::GetHookByName(const std:
 	auto got = hookList.find(function);
 	if (got == hookList.end())
 	{
-		return 0;
+		return nullptr;
 	}
 	return got->second;
 }
