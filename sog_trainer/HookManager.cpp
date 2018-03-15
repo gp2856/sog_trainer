@@ -1,6 +1,6 @@
 #include "HookManager.h"
 #include <algorithm>
-std::shared_ptr<HookManager::AbstractHook> HookManager::getHookByName(const std::string & function)
+std::shared_ptr<HookManager::AbstractHook> HookManager::GetHookByName(const std::string & function)
 {
 	auto got = hookList.find(function);
 	if (got == hookList.end())
@@ -10,20 +10,22 @@ std::shared_ptr<HookManager::AbstractHook> HookManager::getHookByName(const std:
 	return got->second;
 }
 
-std::unique_ptr<HookManager::AbstractHook> HookManager::createHook(HookType hookType, const std::string& name, uint8_t* hookAt, uint8_t* addressOfCallbackFunction)
+void HookManager::CreateHook(HookType hookType, const std::string& name, uint8_t* hookAt, uint8_t* addressOfCallbackFunction)
 {
 	switch (hookType)
 	{
 	case HookType::Call:
 	{
 		hookList[name] = std::make_shared<CallHook>(hookAt, addressOfCallbackFunction);
+		break;
 	}
 	default:
-		return nullptr;
+		std::cout << "[ERROR] Adding hook: Invalid hook type." << std::endl;
+		break;
 	}
 }
 
-void HookManager::printHookInfo()
+void HookManager::PrintHookInfo()
 {
 	for (auto& e : hookList)
 	{

@@ -55,10 +55,10 @@ public:
 	HookManager(const HookManager&) = delete;
 	HookManager operator=(const HookManager&) = delete;
 
-	size_t getNumHookedFunctions() { return hookList.size(); };
-	std::shared_ptr<AbstractHook> getHookByName(const std::string& function);
-	std::unique_ptr<AbstractHook> createHook(HookType hookType, const std::string& name, uint8_t* hookAt,  uint8_t* addressOfCallbackFunction);
-	void printHookInfo();
+	size_t GetNumHookedFunctions() { return hookList.size(); };
+	std::shared_ptr<AbstractHook> GetHookByName(const std::string& function);
+	void CreateHook(HookType hookType, const std::string& name, uint8_t* hookAt,  uint8_t* addressOfCallbackFunction);
+	void PrintHookInfo();
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<AbstractHook>> hookList;
